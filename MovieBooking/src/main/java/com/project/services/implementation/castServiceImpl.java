@@ -24,3 +24,4 @@ public class castServiceImpl implements CastService {
         castRepository.save(cast);
     }
 }
+

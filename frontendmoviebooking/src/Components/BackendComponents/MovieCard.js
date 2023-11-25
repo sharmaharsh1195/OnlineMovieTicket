@@ -16,7 +16,6 @@ const MovieCard = () => {
     
 
     const getAllMovies= async()=>{
-
         try{
             const movielistresponse=await axios.get("http://localhost:9090/admin/movielist")
             setMovieList(movielistresponse.data)
@@ -24,16 +23,15 @@ const MovieCard = () => {
         catch(error){
             console.log(error)
         }
-
-       
-
     }
     useEffect(()=>{
        
         getAllMovies();
     },[isToggle])
 
-   
+   const handlerMovieAdded=()=>{
+    setToogle(!isToggle);
+   }
 
 
   return (
@@ -95,7 +93,7 @@ const MovieCard = () => {
 </div>
 <div className='flex-1'>
 
-{isToggle&&<AddMovie  updatePage={getAllMovies}/>}
+{isToggle&&<AddMovie  oneMovieAdded={handlerMovieAdded}/>}
 </div>
 </div>
 </>

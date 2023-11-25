@@ -6,7 +6,7 @@ import axios from 'axios';
 
 
 
-const AddTheatre = () => {
+const AddTheatre = ({onTheatreAdded}) => {
     const[theatreDetails,setTheatreDetails]=useState({
         theatreName:"",
         theatreAddress:"",
@@ -39,12 +39,14 @@ const AddTheatre = () => {
                   theatreState: "",
                 });
               
-                
+                if (onTheatreAdded) {
+                  onTheatreAdded();
+              }
             })
             .catch((err)=>{
                 console.log(err)
             })
-
+            // onTheatreAdded();
     }
 
 

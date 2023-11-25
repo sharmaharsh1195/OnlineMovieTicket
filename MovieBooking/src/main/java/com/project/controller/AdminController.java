@@ -1,14 +1,13 @@
 package com.project.controller;
 
 
+import com.project.DTO.SeatBookingRequest;
+import com.project.DTO.SeatLockRequest;
 import com.project.entities.Cast;
 import com.project.entities.Movie_Details;
 import com.project.entities.Shows;
 import com.project.entities.Theatre;
-import com.project.services.CastService;
-import com.project.services.MovieDetailService;
-import com.project.services.ShowsService;
-import com.project.services.TheatreService;
+import com.project.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +26,8 @@ import java.sql.Blob;
 @RestController
 @RequestMapping("/admin")
 @CrossOrigin("*")
+//@CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE}, allowedHeaders = "*")
+
 public class AdminController {
 
     @Autowired
@@ -39,6 +40,8 @@ public class AdminController {
     @Autowired
     private ShowsService showsService;
 
+    @Autowired
+    private ShowSeatsService seatsService;
     //theatre admin side controller
     @PostMapping("/addtheatre")
     public ResponseEntity<?> saveTheatre(@RequestBody Theatre theatre) {
@@ -58,12 +61,6 @@ public class AdminController {
    }
 
 
-   @GetMapping("/theatre/{id}")
-   @ResponseBody
-   public Theatre getTheatre(@PathVariable("id") Long id)
-   {
-       return theatreService.getTheatre(id);
-   }
 
 //end of theatre side controller
 
@@ -134,6 +131,7 @@ public class AdminController {
         Movie_Details localmovie = shows.getMovieDetail();
         System.out.println("Movie_Details: " + localmovie);
 
+
         if (localmovie != null) {
             Theatre localtheater = shows.getTheatre();
             System.out.println("Theatre: " + localtheater);
@@ -145,6 +143,10 @@ public class AdminController {
             newshow.setShowStartTiming(shows.getShowStartTiming());
             newshow.setShowEndTiming(shows.getShowEndTiming());
 
+            // Initialize seats for the new show
+            newshow.initializeSeats();
+
+            // Save the show after initializing seats
             Shows local = showsService.addShow(newshow);
 
             if (local != null) {
@@ -157,9 +159,16 @@ public class AdminController {
         return ResponseEntity.badRequest().body("Invalid Movie_Details in the request");
     }
 
-
-
-
+//getting seats
+@GetMapping("/showdetail/{showId}")
+public ResponseEntity<?> getShowDetails(@PathVariable Long showId) {
+    try {
+        Shows show = showsService.getShowDetails(showId);
+        return ResponseEntity.ok(show);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching show details");
+    }
+}
 
     //addcast controller side
 
@@ -191,6 +200,53 @@ public class AdminController {
 
     }
 
+
+
+
+    @GetMapping("/shows/{movieDetailId}")
+    @ResponseBody
+    public List<Shows> getAllTheatreByMovies(@PathVariable("movieDetailId") Long movieDetailId) {
+        return showsService.getAllShows(movieDetailId);
+    }
+
+
+
+    @PostMapping("/seatbooking")
+    @ResponseBody
+    public void bookSelectedSeats(@RequestBody SeatBookingRequest seatBookingRequest) {
+        // Extract showId and selectedSeats from the request
+        Long showId = seatBookingRequest.getShowId();
+        List<String> selectedSeats = seatBookingRequest.getSelectedSeats();
+
+        // Now you can use showId and selectedSeats in your business logic
+        // ...
+
+        seatsService.bookSeats(showId, selectedSeats);
+
+
+        // For demonstration purposes, you can print the received data
+        System.out.println("Show ID: " + showId);
+        System.out.println("Selected Seats: " + selectedSeats);
+
+        // You can implement your business logic here to update the seat status or perform any other actions
+        // ...
+
+        // Respond with a success message or any appropriate response
+    }
+
+
+
+    @PostMapping("/lockseat")
+    public ResponseEntity<String> lockSeat(@RequestBody SeatLockRequest request) {
+        Long showId = request.getShowId();
+        String seatNumber = request.getSeatNumber();
+
+        // Call the service method to lock the seat
+        seatsService.lockSeat(showId, seatNumber);
+
+        // Return success message or appropriate response
+        return ResponseEntity.ok("Seat locked successfully");
+    }
 
 }
 

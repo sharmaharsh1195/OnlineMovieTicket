@@ -9,4 +9,5 @@ public interface TheatreRepository extends JpaRepository<Theatre,Long> {
 
     public  List<Theatre> findByTheatreName(String theatreName);
 
+    List<Theatre> findByMoviesAvailable_MovieDetailId(Long movieDetailId);
 }

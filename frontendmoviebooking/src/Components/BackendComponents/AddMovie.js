@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@mui/material';
 import axios from 'axios';
-const AddMovie = ({updatePage}) => {
+const AddMovie = ({onMovieAdded}) => {
     const [movieDetails, setMovieDetails] = useState({
         title: "",
         description: "",
@@ -9,6 +9,7 @@ const AddMovie = ({updatePage}) => {
         rating: "",
         runtime: "",
         genre: "",
+        
     });
 
     const [posterImage, setPosterImage] = useState(null);
@@ -26,28 +27,43 @@ const AddMovie = ({updatePage}) => {
     const handleBackgroundImageChange = (e) => {
         setBackgroundImage(e.target.files[0]);
     }
-
-    const saveMovie = () => {
-        const formData = new FormData();
-        formData.append("title", movieDetails.title);
-        formData.append("description", movieDetails.description);
-        formData.append("year", movieDetails.year);
-        formData.append("rating", movieDetails.rating);
-        formData.append("runtime", movieDetails.runtime);
-        formData.append("genre", movieDetails.genre);
-        formData.append("posterImage", posterImage);
-        formData.append("backgroundImage", backgroundImage);
-
-        axios.post("http://localhost:9090/admin/addmovie", formData)
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-
-            updatePage();
-    }
+    const saveMovie = async () => {
+      try {
+          const formData = new FormData();
+          formData.append("title", movieDetails.title);
+          formData.append("description", movieDetails.description);
+          formData.append("year", movieDetails.year);
+          formData.append("rating", movieDetails.rating);
+          formData.append("runtime", movieDetails.runtime);
+          formData.append("genre", movieDetails.genre);
+          formData.append("posterImage", posterImage);
+          formData.append("backgroundImage", backgroundImage);
+  
+          const response = await axios.post("http://localhost:9090/admin/addmovie", formData);
+  
+          console.log(response);
+  
+          if (onMovieAdded) {
+              onMovieAdded();
+          }
+  
+          // Reset form fields
+          setMovieDetails({
+              title: "",
+              description: "",
+              year: "",
+              rating: "",
+              runtime: "",
+              genre: ""
+          });
+  
+          setPosterImage(null);
+          setBackgroundImage(null);
+      } catch (error) {
+          console.error(error);
+      }
+  };
+  
 
 
 

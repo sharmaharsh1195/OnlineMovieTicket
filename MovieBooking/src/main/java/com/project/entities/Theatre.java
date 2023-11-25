@@ -1,5 +1,7 @@
 package com.project.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +14,7 @@ import java.util.List;
 @Entity
 @Data
 //@NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 public class Theatre {
 
     @Id
@@ -24,13 +26,25 @@ public class Theatre {
     private String theatreState;
 
     @OneToMany(mappedBy = "theatre", cascade = CascadeType.ALL)
-    @JsonManagedReference("theatreShows")
-    private List<Shows> shows_available = new ArrayList<>();
+//    @JsonManagedReference("theatreShows")
+//    @JsonIgnoreProperties("theatre")
+    @JsonIgnore
+    private List<Shows> showsAvailable = new ArrayList<>();
 
     @OneToMany(mappedBy = "theatre", cascade = CascadeType.ALL)
-    @JsonManagedReference("theatreMovies")
-    private List<Movie_Details> movies_available = new ArrayList<>();
+//    @JsonManagedReference("theatreMovies")
+    private List<Movie_Details> moviesAvailable = new ArrayList<>();
 
+
+    public Theatre(Long theatreId, String theatreName, String theatreAddress, String theatreCity, String theatreState, List<Shows> showsAvailable, List<Movie_Details> moviesAvailable) {
+        this.theatreId = theatreId;
+        this.theatreName = theatreName;
+        this.theatreAddress = theatreAddress;
+        this.theatreCity = theatreCity;
+        this.theatreState = theatreState;
+        this.showsAvailable = showsAvailable;
+        this.moviesAvailable = moviesAvailable;
+    }
 
     public Theatre() {
     }
@@ -42,8 +56,8 @@ public class Theatre {
     public void setMovieDetail(Movie_Details movieDetail) {
         if (movieDetail != null) {
             movieDetail.setTheatre(this);
-            if (!movies_available.contains(movieDetail)) {
-                movies_available.add(movieDetail);
+            if (!moviesAvailable.contains(movieDetail)) {
+                moviesAvailable.add(movieDetail);
             }
         }
     }

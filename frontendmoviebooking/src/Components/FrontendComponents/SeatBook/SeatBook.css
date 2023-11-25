@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+.booking-seatbody {
+  background-color: #242333;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: 'Lato', 'sans-serif';
+}
+
+.booking-container {
+  perspective: 1000px;
+  margin-bottom: 30px;
+}
+
+.booking-row {
+  display: flex;
+  justify-content: center;
+}
+
+.booking-available {
+  background-color: #18c427; /* Green color for available seats */
+  cursor: pointer;
+}
+
+.booking-seat.booking-occupied {
+  background-color: #bb1818 !important;
+  cursor: not-allowed;
+}
+.booking-seat.booking-locked {
+  background-color: red; /* Change this to the desired style for locked seats */
+}
+.booking-seat {
+  background-color: #b5b5c6;
+  height: 28px;
+  width: 30px;
+  margin: 5px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.booking-selected {
+  background-color: white !important; /* Change the background color to white for selected seats */
+  color: #242333; /* Change the text color for better visibility */
+}
+
+.booking-seat:not(.booking-occupied):hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.booking-showcase .booking-seat:not(.booking-occupied):hover {
+  cursor: default;
+  transform: scale(1);
+}
+
+.booking-showcase {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #777;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+}
+
+.booking-showcase li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+}
+
+.booking-showcase li small {
+  margin-left: 10px;
+}
+
+.booking-screen {
+  background-color: #fff;
+  height: 70px;
+  width: 100%;
+  margin: 15px 0;
+  transform: rotateX(-45deg);
+  box-shadow: 0 3px 10px rgba(255, 255, 255, 0.75);
+}
+
+.booking-text {
+  margin: 5px 0;
+}
+
+.booking-text span {
+  color: #6feaf6;
+}
+
+.booking-btn-primary {
+  /* Add your primary button styles here */
+}
+
+.booking-btn-lg {
+  /* Add your large button styles here */
+}
+
+.booking-btn-block {
+  /* Add your block button styles here */
+}

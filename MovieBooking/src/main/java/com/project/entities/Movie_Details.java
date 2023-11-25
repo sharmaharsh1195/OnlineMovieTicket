@@ -1,6 +1,8 @@
 package com.project.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.project.serializer.BlobSerializer;
@@ -46,8 +48,10 @@ public class Movie_Details {
     @Lob
     private Blob  backgroundImage;
 
-    @OneToMany(mappedBy ="movieDetail",cascade = CascadeType.ALL)
-    @JsonManagedReference("movieShows")
+    @OneToMany(mappedBy ="movieDetail",cascade = CascadeType.ALL) //onetomany and mapped by this is owning side which has foreign key
+//    @JsonManagedReference("movieShows")
+//    @JsonIgnoreProperties("movieDetail")
+    @JsonIgnore
     private List<Shows> moviesShows=new ArrayList<Shows>();
 
 
@@ -73,8 +77,8 @@ public class Movie_Details {
 
         this.theatre = theatre;
 
-        if (theatre != null && !theatre.getMovies_available().contains(this)) {
-            theatre.getMovies_available().add(this);
+        if (theatre != null && !theatre.getMoviesAvailable().contains(this)) {
+            theatre.getMoviesAvailable().add(this);
         }
     }
 

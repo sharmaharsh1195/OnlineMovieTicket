@@ -1,5 +1,6 @@
 package com.project.services.implementation;
 
+import com.project.Exception.MovieNotFoundException;
 import com.project.entities.Movie_Details;
 import com.project.repository.Moviedetailrepository;
 import com.project.services.ImageUtils;
@@ -45,7 +46,8 @@ public class MovieDetailImpl  implements MovieDetailService {
 
     @Override
     public Movie_Details findByMovieDetailsId(Long id) {
-        return moviedetailrepository.findById(id).orElse(null);
+        return moviedetailrepository.findById(id)
+                .orElseThrow(() -> new MovieNotFoundException("Movie not found with id: " + id));
     }
 
 

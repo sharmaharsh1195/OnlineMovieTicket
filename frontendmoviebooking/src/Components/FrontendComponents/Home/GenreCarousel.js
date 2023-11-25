@@ -25,13 +25,20 @@ const GenreCarousel = ({ genre }) => {
     },
   };
 
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [movieList, setMovieList] = useState([]);
 
   useEffect(() => {
     const getAllMovies = async () => {
       try {
-        const movielistresponse = await axios.get("http://localhost:9090/admin/movielist");
+        const token = localStorage.getItem('token');
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        const movielistresponse = await axios.get("http://localhost:9090/admin/movielist", config);
         setMovieList(movielistresponse.data);
       } catch (error) {
         console.log(error);
@@ -40,7 +47,6 @@ const GenreCarousel = ({ genre }) => {
 
     getAllMovies();
   }, []);
-
 
   const moveToDetail = (movieId) => {
     navigate(`/details/${movieId}`);
@@ -55,7 +61,7 @@ const GenreCarousel = ({ genre }) => {
       <ContentWrapper>
         <Carousel centerMode={true} responsive={responsive}>
           {filteredMovies.map((movie, index) => (
-            <div key={index} onClick={()=>moveToDetail(movie.movieDetailId)} >
+            <div key={index} onClick={() => moveToDetail(movie.movieDetailId)}>
               {movie.posterImage && (
                 <img src={`data:image/jpeg;base64,${movie.posterImage}`} alt={movie.title} style={{ width: '90%' }} />
               )}

@@ -30,5 +30,12 @@ public class TheatreServiceImpl implements TheatreService {
         return theatreRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public List<Theatre> getAllTheatreByMovies(Long movieDetailId) {
+//        return theatreRepository.findByMoviesAvailable_MovieDetailId(movieDetailId);
+
+    return theatreRepository.findAll();
+    }
+
 
 }
