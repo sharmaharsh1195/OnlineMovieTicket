@@ -53,6 +53,7 @@ public class AdminController {
         return ResponseEntity.badRequest().body("theatre not added");
     }
 
+
    @GetMapping("/theatrelist")
    @ResponseBody
     public List<Theatre> getTheatrelist()
@@ -69,6 +70,7 @@ public class AdminController {
  //************************************************************************************************
 
  //movie side controller
+
 
         @PostMapping("/addmovie")
         public ResponseEntity<?> saveMovie(
@@ -106,7 +108,7 @@ public class AdminController {
         }
 
 
-    @GetMapping("/movielist")
+        @GetMapping("/movielist")
  @ResponseBody
  public List<Movie_Details> getMovieList()
  {
@@ -158,6 +160,8 @@ public class AdminController {
 
         return ResponseEntity.badRequest().body("Invalid Movie_Details in the request");
     }
+
+
 
 //getting seats
 @GetMapping("/showdetail/{showId}")
@@ -228,10 +232,7 @@ public ResponseEntity<?> getShowDetails(@PathVariable Long showId) {
         System.out.println("Show ID: " + showId);
         System.out.println("Selected Seats: " + selectedSeats);
 
-        // You can implement your business logic here to update the seat status or perform any other actions
-        // ...
 
-        // Respond with a success message or any appropriate response
     }
 
 

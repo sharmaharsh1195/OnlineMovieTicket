@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/movie")
 public class UserController {
 
+
+
     @Autowired
     private MovieDetailService movieDetailService;
 

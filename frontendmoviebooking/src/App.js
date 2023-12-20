@@ -20,6 +20,8 @@ import Login from './Components/SignIn';
 import  Navbar from './Components/FrontendComponents/NavBar/Navbar';
 import { createContext, useReducer } from 'react';
 import SeatBook from './Components/FrontendComponents/SeatBook/SeatBook';
+import Payment from './Components/FrontendComponents/Payment/Payment';
+import Upload from './Components/FrontendComponents/Upload';
 
 
 
@@ -42,7 +44,10 @@ const Routing=()=>{
     <Route path="/login" element={<Login/>}/>
     <Route path="/logout" element={<Login/>}/>
     <Route path="/home" element={<Home/>}/>
-    <Route path="/ordersummary/:showid" element={<OrderSummary />} />
+    <Route path="/ordersummary/:showId" element={<OrderSummary />} />
+    <Route path="/payment/:showId" element={<Payment />} />
+    <Route path="/uploadFile" element={<Upload />} />
+    
 
 
     </Routes>

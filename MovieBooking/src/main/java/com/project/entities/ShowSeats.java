@@ -15,6 +15,8 @@ public class ShowSeats {
     private boolean isAvailable = true;
     private boolean isLocked = false; // New state to represent whether the seat is locked
 
+
+
     @Column
     private LocalDateTime seatSelectionTime;
 

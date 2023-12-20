@@ -10,6 +10,7 @@ const SeatBook = () => {
   const [showOrderSummary, setShowOrderSummary] = useState(false);
   const navigate = useNavigate();
   const { showId } = useParams();
+  console.log(showId);
 
   useEffect(() => {
     const url = `http://localhost:9090/admin/showdetail/${showId}`;
@@ -45,7 +46,7 @@ const SeatBook = () => {
         }
       });
   
-      // Call the backend to lock the seat
+      
       axios
         .post('http://localhost:9090/admin/lockseat', {
           showId: Number(showId),
@@ -53,12 +54,12 @@ const SeatBook = () => {
         })
         .then((response) => {
           console.log('Seat locked successfully', response);
-          // Add class for locked seats
+          
           if (response.data === 'Seat locked successfully') {
             console.log('Adding class for locked seat');
             seatElement.classList.add('booking-locked');
   
-            // Fetch updated seat details after locking
+            // i am here trying to fetch updated seat details after locking
             axios
               .get(`http://localhost:9090/admin/showdetail/${showId}`)
               .then((response) => {
@@ -115,11 +116,11 @@ const SeatBook = () => {
         selectedSeats: selectedSeatIds,
       })
         .then((response) => {
-          // Handle the response if needed
+         
           console.log('Seats booked successfully', response);
         })
         .catch((error) => {
-          // Handle errors if the request fails
+          
           console.error('Error booking seats:', error);
         });
     } else {
@@ -157,11 +158,14 @@ const SeatBook = () => {
           You have selected <span id="count">{selectedSeatIds.length}</span> seats.
         </p>
         <div>
-          <Link
-            to={`/ordersummary/${showId}${selectedSeatIds.length > 0 ? `?selectedSeats=${selectedSeatIds.join(',')}` : ''}`}
-            className="booking-btn booking-btn-primary booking-btn-lg booking-btn-block"
-            onClick={bookSeatHandler}
-          >
+        <Link
+  to={`/ordersummary/${showId}${selectedSeatIds.length > 0 ? `?selectedSeats=${selectedSeatIds.join(',')}` : ''}`}
+  className="booking-btn booking-btn-primary booking-btn-lg booking-btn-block"
+  onClick={() => {
+    console.log('Navigating to OrderSummary with showId:', showId); 
+    bookSeatHandler();
+  }}
+>
             Click Here to Book Tickets
           </Link>
         </div>
@@ -171,6 +175,7 @@ const SeatBook = () => {
         <OrderSummary
           selectedSeats={selectedSeatIds}
           onContinueToPayment={handlePaymentContinue}
+          showId={showId}
         />
       )}
     </>

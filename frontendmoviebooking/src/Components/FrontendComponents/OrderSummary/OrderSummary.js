@@ -1,14 +1,27 @@
-import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
-const OrderSummary = ({ onContinueToPayment }) => {
-    const location = useLocation();
-    const { showId } = useParams();
-    const searchParams = new URLSearchParams(location.search);
-    const selectedSeats = searchParams.get('selectedSeats');
-  
-    // Split the selectedSeats string into an array
-    const selectedSeatArray = selectedSeats ? selectedSeats.split(',') : [];
+const OrderSummary = () => {
+  const { showId } = useParams();
+  const navigate = useNavigate();
+  const searchParams = new URLSearchParams(window.location.search);
+  const selectedSeats = searchParams.get('selectedSeats');
+
+  // Split the selectedSeats string into an array
+  const selectedSeatArray = selectedSeats ? selectedSeats.split(',') : [];
+
+  const [amount, setAmount] = useState();
+
+  useEffect(() => {
+    setAmount(selectedSeatArray.length * 250);
+  }, [selectedSeatArray]);
+
+  const paymentGateway = () => {
+    console.log('Total Payment before navigating:', amount);
+
+    // Programmatically navigate to the payment page with totalPayment as a query parameter
+    navigate(`/payment/${showId}?totalPayment=${amount}`);
+  };
 
   return (
     <div className="container mt-4">
@@ -18,13 +31,13 @@ const OrderSummary = ({ onContinueToPayment }) => {
           <p>Seats: {selectedSeatArray.join(', ')}</p>
           <div className="d-flex justify-content-between">
             <span className="fw-bold">Ticket Price:</span>
-            <span>Rs. 250</span>
+            <span>Rs.250 </span>
           </div>
           <div className="d-flex justify-content-between">
             <span className="fw-bold">Total Price:</span>
-            <span>Rs. {selectedSeatArray.length * 250}</span>
+            <span>Rs. {amount}</span>
           </div>
-          <button className="btn btn-primary mt-3" onClick={onContinueToPayment}>
+          <button className="btn btn-primary mt-3" onClick={paymentGateway}>
             Continue to Payment
           </button>
         </div>

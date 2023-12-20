@@ -53,7 +53,7 @@ public class SecurityConfig  {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/signin", "/signup","/admin/movielist","/admin/movie/{id}","/admin/showdetail/{showId}","/admin/shows/{movieDetailId}",
                                 "/admin/addcast/{movieDetailId}","/admin/addshow","/admin/addmovie","/admin/addtheatre","/admin/theatrelist","/admin/seatbooking","/admin/lockseat"
-                                ).permitAll()
+                                ,"/user/create_order").permitAll()
 
                        .requestMatchers("/user/**", "/showproducts", "/placeorder").hasRole("USER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
